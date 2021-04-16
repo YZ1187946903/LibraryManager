@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class PageVO<E> implements Serializable {
 	private static final long serialVersionUID = 7952991438675620050L;
-	private Integer pageNo;                    // 当前页码
+	private Integer pageNo;                     // 当前页码
 	private Integer pageSize;                   // 每页显示数量
 	private Integer draw;                       // DataTables组件信息
 	private List<E> list;                       // 分页列表
