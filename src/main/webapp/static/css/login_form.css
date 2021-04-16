@@ -1,0 +1,246 @@
+/*  初始化取消页面元素的内外边距 */
+*{
+	padding: 0;
+	margin: 0;
+	/*  盒子模型 */
+	box-sizing: border-box;
+}
+body{
+	/*  弹性布局：display: flex */
+	display: flex;
+	/*  让页面元素垂直水平居中 */
+	justify-content: center;
+	align-items: center;
+	/*  让页面始终占浏览器可视区域高度 */
+	background-size:cover;
+	height: 100vh;
+	background-image:url("../img/sea.jpg");
+	background-repeat: no-repeat;
+}
+.login{
+	/* 弹性布局 ，将子元素称为弹性项目 */
+	display: flex;
+	/* flex-direction: column;让弹性项目从上到下垂直排列 原理是改变弹性盒子的主轴方向
+	父元素就是弹性盒子 , 现在改变后的主轴方向是向下了 */
+	flex-direction: column;
+	/* 让弹性项目在交叉轴方向水平居中，现在主轴的方向是向下
+	交叉轴的方向是与主轴垂直，交叉轴的方向是向右 */
+	align-items: center;
+	width: 500px;
+	padding: 50px;
+	/*  设置盒子背景颜色：rgba( ，，，)最后一个空是透明度 */
+	background-color: #6AB5D6;
+	/* 设置盒子阴影效果 */
+	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+	/*box-shadow: 0 0 15px lightblue;*/
+}
+.login-a{
+	display: flex;
+	/* flex-direction: column;让弹性项目从上到下垂直排列 原理是改变弹性盒子的主轴方向
+	父元素就是弹性盒子 , 现在改变后的主轴方向是向下了 */
+	/* flex-direction: column; */
+	/* 让弹性项目在交叉轴方向水平居中，现在主轴的方向是向下
+	交叉轴的方向是与主轴垂直，交叉轴的方向是向右 */
+	align-items: center;
+	position: relative;
+}
+
+
+/*  设置”用户登录“字体样式*/
+caption {
+	color:#fff;
+	font: 30px bold normal 微软雅黑;
+	margin-bottom: 30px;
+}
+/*  设置账户，密码框所在的div*/
+.login-box {
+	/*	开启相对定位，用于设置用户名和密码字体位置 */
+	position: relative;
+	width: 100%;
+}
+/*  设置input输入框 */
+.login-box input{
+/*	清楚input自带的边框和轮廓*/
+	outline: none;
+	border: none;
+	width: 300px;
+	padding: 10px 0;
+	margin-bottom: 40px;
+	color: #fff;
+	font-size: 16px;
+	/*  只给底边设置线条，输入框只展示一条线*/
+	border-bottom: 1px solid #fff;
+	/* 背景颜色为透明色 */
+	background-color: transparent;
+}
+/*  设置用户名和密码字体样式 */
+.login-box label{
+	 /* 设置绝对定位*/
+	position: absolute;
+	top: 0;
+	left: 0;
+	/* 设置内边距相当于将字体的高度调高并且垂直居中 */
+	padding: 10px 0;
+	color: rgb(255, 255, 255);
+	/* 这个属性的默认值是auto 默认是这个元素可以被点击 ,
+		但是如果我们写了none,就是这个元素不能被点击,就好像它可见但是不能用,可望而不可即  */
+	/* 不让它能点击的目的:就是点用户名三个字所在的位置也可以直接输入,否则点到文字的位置上会出现聚焦,不能输入 */
+	pointer-events: none;
+	/* 加个过渡 */
+	transition: all 0.5s;
+}
+/*  focus 选择器：当input获得焦点时触发的样式， + 是相邻兄弟选择器 ，去找与input相邻的兄弟label */
+/*  valid 选择器：判断input框的内容是否合法,如果合法会执行下面的属性代码,不合法就不会执行。
+	(1)当没有required的话input框的值就会被认为一直合法,所以一直都是改变后的缩小上移的样式。
+	(2)但是密码不会,密码框内的值为空,那么这句话就不合法,required不能为空。
+	当我们给密码框写点东西的时候才会执行以下代码。才会出现变为小字并上移的效果 */
+/*  就是说当获得焦点，或者处于合法状态下，输入框就会改变样式*/
+.login-box input:focus + label,
+.login-box input:valid + label {
+	top: -30px;
+	color: #03e9f4;
+	font-size: 14px;
+}
+/*  设置"登录"的超链接样式*/
+button{
+	border:0px solid transparent;
+	border-radius:5px;
+	width: 90px;
+	height:50px;
+	font:normal normal 20px 微软雅黑;
+	/* 将动画超出部分隐藏*/
+	overflow: hidden;
+	left: 40px;
+	position: relative;
+	/* 设置内边距将超链接调大一点,用于后续调动画*/
+	padding: 10px 20px;
+	color: #f40398;
+	background-color: rgba(202, 220, 227, 0.801);
+	/* 同样加个过渡 */
+	transition: all 0.5s;
+}
+.b2{
+	border:0px solid transparent;
+	/* 取消a表现原有的下划线 */
+	text-decoration: none;
+	/* 同样加个过渡 */
+	transition: all 0.5s;
+	padding: 10px 10px;
+	padding-left:25px;
+	border-radius:5px;
+	width: 90px;
+	height:50px;
+	position: relative;
+	font:normal normal 20px 微软雅黑;
+	left: 100px;
+	color: #4303f4;
+	background-color: rgba(202, 220, 227, 0.801);
+}
+/*  设置超链接伪类*/
+button:hover {
+	color: #fff;
+	border-radius: 5px;
+	background-color: #03e9f4;
+	/* 设置四边的阴影:多重阴影显的更模糊真实,没有单重阴影那么清晰。
+		多重阴影顺序:从上往下分布,第一个阴影在最顶层(最里层)*/
+	box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4,
+	0 0 50px #03e9f4,0 0 100px #03e9f4;
+}
+.b2:hover{
+	color: #fff;
+	border-radius: 5px;
+	background-color: #03e9f4;
+	/* 设置四边的阴影:多重阴影显的更模糊真实,没有单重阴影那么清晰。
+		多重阴影顺序:从上往下分布,第一个阴影在最顶层(最里层)*/
+	box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4,
+	0 0 50px #03e9f4,0 0 100px #03e9f4;
+}
+button span {
+	/* 给span元素开始一个绝对定位,用于后面设置动画*/
+	/* 绝对定位会改变元素的性质，行内元素变成块元素*/
+	position: absolute;
+/*	因为它的父级元素a开启了定位,所以它是相对于a定位的*/
+}
+/* span:first-child:选择span中的第一个标签*/
+button span:first-child {
+	/* span与a元素上边的距离为0,与左边的距离为-100%,即向左移动了a的width个长度*/
+	top: 0;
+	left: -100%;
+	/* 设置span的样式*/
+	width: 100%;
+	height: 2px;
+	/* to right 就是往右边 下面的同理 */
+	background: linear-gradient(to right, transparent, blue,deeppink);
+	/* 动画 名称 时长 linear是匀速运动 infinite是无限次运动 */
+	animation: move1 1s linear infinite;
+}
+/* span:nth-child(2)选择第二个标签*/
+button span:nth-child(2) {
+	right: 0;
+	top: -100%;
+	width: 2px;
+	height: 100%;
+	background: linear-gradient(transparent, blue,deeppink);
+	/* 这里多了个0.25s其实是延迟时间 */
+	animation: move2 1s linear 0.25s infinite;
+}
+button span:nth-child(3) {
+	bottom: 0;
+	/* right：元素于定位位置右侧的距离，偏移量越大元素越靠左*/
+	right: -100%;
+	width: 100%;
+	height: 2px;
+	/* 向左开始变化。约靠左颜色越深，线越粗*/
+	background: linear-gradient(to left, transparent, blue,deeppink);
+	animation: move3 1s linear 0.5s infinite;
+}
+button span:last-child {
+	bottom: -100%;
+	/* right：元素于定位位置右侧的距离，偏移量越大元素越靠左*/
+	left: 0;
+	width: 2px;
+	height: 100%;
+	/* 向左开始变化。约靠左颜色越深，线越粗*/
+	background: linear-gradient(to top, transparent, blue,deeppink);
+	animation: move4 1s linear 0.75s infinite;
+}
+/* 设置延迟时间是为了刚好能出现依次流动的效果。*/
+/* 相当于从最左边开始向右移动两个自身的距离*/
+@keyframes move1 {
+	0% {
+		left: -100%;
+	}
+	/* 50%,100%相当于提前在50%的时候就用了0.5S结束了动画。然后50%-100%的时间在静止等待*/
+	50%,
+	100% {
+		left: 100%;
+	}
+}
+@keyframes move2 {
+	0% {
+		top: -100%;
+	}
+	50%,
+	100% {
+		top: 100%;
+	}
+}
+@keyframes move3 {
+	0% {
+		right: -100%;
+	}
+	50%,
+	100% {
+		right: 100%;
+	}
+}
+@keyframes move4 {
+	0% {
+		bottom: -100%;
+	}
+	50%,
+	100% {
+		bottom: 100%;
+	}
+}
+

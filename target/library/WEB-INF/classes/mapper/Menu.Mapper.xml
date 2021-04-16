@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ysl.library.dao.MenuDao">
+	<sql id="selectSQL">
+		select
+			sm.id,
+			sm.parent_id,
+			parent.text parent_text,
+			sm.text,
+			sm.url,
+			sm.icon,
+			sm.create_time,
+			sm.update_time
+		from
+			sys_menu sm join sys_role_menu srm on sm.id=srm.menu_id
+			            left join sys_menu parent on sm.parent_id=parent.id
+	</sql>
+	<select id="findMenuListByRoleAndParent" parameterType="java.util.Map" resultMap="menuMap">
+		<include refid="selectSQL"/>
+		<where>
+			<trim suffixOverrides="and">
+				<choose>
+					<when test="parent != null">sm.parent_id=#{parent} and </when>
+					<otherwise>sm.parent_id is null and </otherwise>
+				</choose>
+				<if test="role != null">srm.role_id=#{role} and </if>
+			</trim>
+		</where>
+	</select>
+	<select id="findMenuListByRole" parameterType="Role" resultMap="menuMap">
+		<include refid="selectSQL"/>
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">srm.role_id=#{id} and </if>
+			</trim>
+		</where>
+	</select>
+
+	<select id="findMenuListByQuery" parameterType="Menu" resultMap="menuMap">
+		select
+		sm.id,
+		sm.parent_id,
+		parent.text parent_text,
+		sm.text,
+		sm.url,
+		sm.icon,
+		sm.create_time,
+		sm.update_time
+		from
+		sys_menu sm left join sys_menu parent on sm.parent_id=parent.id
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">sm.id=#{id} and </if>
+				<if test="parent != null and parent.id != null">sm.parent_id=#{parent.id} and </if>
+				<if test="text != null">sm.text like concat('%', #{text}, '%') and </if>
+			</trim>
+		</where>
+	</select>
+	<resultMap id="menuMap" type="Menu">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="text" javaType="java.lang.String" column="text"/>
+		<result property="url" javaType="java.lang.String" column="url"/>
+		<result property="icon" javaType="java.lang.String" column="icon"/>
+		<result property="createTime" javaType="java.util.Date" column="create_time"/>
+		<result property="updateTime" javaType="java.util.Date" column="update_time"/>
+		<association property="parent" javaType="Menu">
+			<id property="id" javaType="java.lang.Long" column="parent_id"/>
+			<result property="text" javaType="java.lang.String" column="parent_text"/>
+		</association>
+	</resultMap>
+</mapper>

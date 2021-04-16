@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ysl.library.dao.RoleDao">
+	<select id="findByQuery" parameterType="Role" resultMap="roleMap">
+		select
+		id,
+		name,
+		create_time,
+		update_time
+		from
+		sys_role
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">id=#{id} and </if>
+				<if test="name != null and !name.isEmpty()">name like concat('%', #{name}, '%') and </if>
+			</trim>
+		</where>
+		<if test="begin != null and size != null">
+			limit #{begin}, #{size}
+		</if>
+	</select>
+	<resultMap id="roleMap" type="Role">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="name" javaType="java.lang.String" column="name"/>
+		<result property="createTime" javaType="java.util.Date" column="create_time"/>
+		<result property="updateTime" javaType="java.util.Date" column="update_time"/>
+	</resultMap>
+
+	<delete id="deleteRoleMenuByRoleId" parameterType="java.lang.Long">
+		delete from sys_role_menu where role_id=#{id}
+	</delete>
+
+	<insert id="saveRoleMenu" parameterType="java.util.Map">
+		insert into sys_role_menu(role_id, menu_id) values(#{roleId}, #{menuId});
+	</insert>
+
+	<insert id="saveRole" parameterType="Role">
+		insert into sys_role(name) values(#{name})
+	</insert>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<description>Shiro 配置文件</description>
+	<!-- 1、配置 Shiro 核心认证对象 SecurityManager -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 如果需要安全认证，那么指定能够完成认证的 bean -->
+		<property name="realm" ref="shiroDBRealm"/>
+	</bean>
+
+	<!-- 2、配置 Shiro 安全认证规则。该规则就是 Shiro 自己的过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- （1）依赖注入 SecurityManager 信息 -->
+		<property name="securityManager" ref="securityManager"/>
+		<!-- （2）如果该用户需要登录，那么设定重定向到登录界面的请求 -->
+		<property name="loginUrl" value="/user/login"/>
+		<!-- （3）如果在认证之前没有明确的请求，那么设定登录成功之后的默认首页面 -->
+		<property name="successUrl" value="/"/>
+		<!-- （4）配置认证规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+				<!-- A.配置不需要认证的请求 -->
+				<!-- (1)静态资源不需要认证 :anon匿名访问不需要认证。-->
+				/static/** = anon
+				<!-- (2)对于注册请求，不需要认证 -->
+				/user/register = anon
+				<!-- B.对于退出，Shiro 同样提供了规则 :logout Shiro提供的退出功能-->
+				/user/logout = logout
+				<!-- C.除了以上的请求，都需要进行认证 : authc需要认证-->
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<!-- 3、配置 Shiro 在重定向到登录界面时禁止重写重定向地址，在其后面增加 ;jsessionid=04690E434A1EC9B7AF0D40822CD65F68 -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionIdUrlRewritingEnabled" value="false"/>
+	</bean>
+</beans>

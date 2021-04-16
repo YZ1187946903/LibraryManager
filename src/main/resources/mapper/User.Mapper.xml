@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ysl.library.dao.UserDao">
+	<select id="findListByQuery" parameterType="User" resultMap="userMap">
+		select
+			su.id,
+			su.name,
+			su.cellphone,
+			su.password,
+			su.role_id,
+			sr.name role_name,
+			su.id_card,
+		    su.status,
+			su.number,
+			su.money,
+			su.create_time,
+			su.update_time
+		from
+			sys_user su
+				join sys_role sr on su.role_id=sr.id
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">su.id=#{id} and </if>
+				<if test="name != null">su.name like concat('%', #{name}, '%') and </if>
+				<if test="cellphone != null">su.cellphone=#{cellphone} and </if>
+				<if test="status != null">su.status=#{status} and </if>
+			</trim>
+		</where>
+		<if test="begin !=null and size != null">
+			limit #{begin},#{size}
+		</if>
+	</select>
+	<resultMap id="userMap" type="User">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="name" javaType="java.lang.String" column="name"/>
+		<result property="cellphone" javaType="java.lang.String" column="cellphone"/>
+		<result property="password" javaType="java.lang.String" column="password"/>
+		<result property="idCard" javaType="java.lang.String" column="id_card"/>
+		<result property="status" javaType="java.lang.Integer" column="status"/>
+		<result property="number" javaType="java.lang.Integer" column="number"/>
+		<result property="money" javaType="java.lang.Integer" column="money"/>
+		<result property="createTime" javaType="java.util.Date" column="create_time"/>
+		<result property="updateTime" javaType="java.util.Date" column="update_time"/>
+		<association property="role" javaType="Role">
+			<id property="id" javaType="java.lang.Long" column="role_id"/>
+			<result property="name" javaType="java.lang.String" column="role_name"/>
+		</association>
+	</resultMap>
+	<update id="updateUser" parameterType="User">
+		update sys_user
+		<set>
+			<trim suffixOverrides=",">
+				<if test="name != null and !name.isEmpty()">
+					name=#{name} ,
+				</if>
+				<if test="cellphone != null and !cellphone.isEmpty()">
+					cellphone=#{cellphone} ,
+				</if>
+				<if test="password != null and !password.isEmpty()">
+					password=#{password} ,
+				</if>
+				<if test="role != null">
+					role_id=#{role.id} ,
+				</if>
+				<if test="idCard != null and !idCard.isEmpty()">
+					id_card=#{idCard} ,
+				</if>
+				<if test="status != null">
+					status=#{status} ,
+				</if>
+				<if test="number != null">
+					number=#{number} ,
+				</if>
+				<if test="money != null">
+					money=#{money} ,
+				</if>
+			</trim>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+
+	<insert id="saveUser" parameterType="User">
+		insert into sys_user(
+		<trim suffixOverrides=",">
+			<if test="name != null and !name.isEmpty()">
+				name ,
+			</if>
+			<if test="cellphone != null and !cellphone.isEmpty()">
+				cellphone ,
+			</if>
+			<if test="password != null and !password.isEmpty()">
+				password ,
+			</if>
+			<if test="role != null">
+				role_id ,
+			</if>
+			<if test="idCard != null and !idCard.isEmpty()">
+				id_card ,
+			</if>
+			<if test="status != null">
+				status ,
+			</if>
+			<if test="number != null">
+				number ,
+			</if>
+			<if test="money != null">
+				money ,
+			</if>
+		</trim>
+		) values(
+		<trim suffixOverrides=",">
+			<if test="name != null and !name.isEmpty()">
+				#{name} ,
+			</if>
+			<if test="cellphone != null and !cellphone.isEmpty()">
+				#{cellphone} ,
+			</if>
+			<if test="password != null and !password.isEmpty()">
+				#{password} ,
+			</if>
+			<if test="role != null">
+				#{role.id} ,
+			</if>
+			<if test="idCard != null and !idCard.isEmpty()">
+				#{idCard} ,
+			</if>
+			<if test="status != null">
+				#{status} ,
+			</if>
+			<if test="number != null">
+				#{number} ,
+			</if>
+			<if test="money != null">
+				#{money} ,
+			</if>
+		</trim>
+		)
+	</insert>
+</mapper>

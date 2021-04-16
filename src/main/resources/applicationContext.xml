@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/tx
+							http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<description>Spring 核心配置文件</description>
+	<!-- 1、配置 jdbc.properties 文件所在路径。classpath*:就相当于src下的通配  -->
+	<context:property-placeholder location="classpath*:jdbc.properties"/>
+	<!-- 2、设定 Spring 注解扫描的基础包位置  -->
+	<context:component-scan base-package="cn.ysl.library">
+		<!-- (1)排除掉控制层的常用注解     -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	<!-- 3、配置创建数据库连接的 DataSource 的 Bean 组件  -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<!-- (1)依赖注入 JDBC 的四个基本信息 -->
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<!-- (2)为了提高数据库连接池的工作效率，需要对数据库连接池相关参数进行配置 -->
+		<!-- a.设定数据库连接池中的最小连接数 -->
+		<property name="minIdle" value="${druid.minIdle}"/>
+		<!-- b.设定数据库连接池中的最大连接数 -->
+		<property name="maxActive" value="${druid.maxActive}"/>
+		<!-- c.设定数据库连接池的初始值 -->
+		<property name="initialSize" value="${druid.initialSize}"/>
+		<!-- d.设定连接对象的最小存活时间 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}"/>
+		<!-- e.设定连接对象的最大存活时间 -->
+		<property name="maxEvictableIdleTimeMillis" value="${druid.maxEvictableIdleTimeMillis}"/>
+	</bean>
+	<!-- 4、配置 MyBatis 的 SqlSessionFactory 对应的 Bean 组件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- (1)依赖注入 DataSource 信息 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- (2)设定 Mapper 映射文件基础路径 -->
+		<property name="mapperLocations" value="classpath*:/mapper/*.Mapper.xml"/>
+		<!-- (3)设定 Mapper 映射文件实体类型基础包 -->
+		<property name="typeAliasesPackage" value="cn.ysl.library.pojo.entity"/>
+	</bean>
+	<!-- 5、配置 MyBatis 数据持久层接口扫描机制  -->
+	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- (1)依赖注入 SqlSessionFactory 信息 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+		<!-- (2)设定所有数据持久层接口位置 -->
+		<property name="basePackage" value="cn.ysl.library.dao"/>
+	</bean>
+	<!-- 6、配置使用 Spring 所提供的事务处理机制  -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- (1)依赖注入 DataSource 信息 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 7、采用声明式（注解的形式，@Transactional）管理事务
+				proxy-target-class="true" 的配置将默认的 JDK 代理切换为 CGLIB 代理。-->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+</beans>

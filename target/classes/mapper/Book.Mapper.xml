@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ysl.library.dao.BookDao">
+	<select id="findListByQuery" parameterType="Book" resultMap="bookMap">
+		select
+			id,name,no,author,publish,bookshelf,price,number,
+		       status,create_time,update_time
+		from sys_book
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">id=#{id} and </if>
+				<if test="no != null">no=#{no} and </if>
+				<if test="name != null">name like concat('%', #{name}, '%') and </if>
+				<if test="bookshelf != null">bookshelf=#{bookshelf} and </if>
+				<if test="status != null">status=#{status} and </if>
+			</trim>
+		</where>
+		<if test="begin !=null and size != null">
+			limit #{begin},#{size}
+		</if>
+	</select>
+	<resultMap id="bookMap" type="Book">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="name" javaType="java.lang.String" column="name"/>
+		<result property="no" javaType="java.lang.String" column="no"/>
+		<result property="author" javaType="java.lang.String" column="author"/>
+		<result property="publish" javaType="java.lang.String" column="publish"/>
+		<result property="bookshelf" javaType="java.lang.String" column="bookshelf"/>
+		<result property="price" javaType="java.lang.Integer" column="price"/>
+		<result property="number" javaType="java.lang.Integer" column="number"/>
+		<result property="status" javaType="java.lang.Integer" column="status"/>
+		<result property="createTime" javaType="java.util.Date" column="create_time"/>
+		<result property="updateTime" javaType="java.util.Date" column="update_time"/>
+	</resultMap>
+</mapper>
