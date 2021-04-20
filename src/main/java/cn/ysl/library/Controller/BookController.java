@@ -47,6 +47,12 @@ public class BookController {
 		return "book/book_powerUpdate";
 	}
 
+	@GetMapping("/update/{id}")
+	public String forwardUpdate(@PathVariable Long id, ModelMap map) throws Exception {
+		map.put("book",bookService.findBookById(id));
+		return "book/book_update";
+	}
+
 
 
 	/**

@@ -16,4 +16,6 @@ public interface BookService {
 	PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status) throws Exception;
 
 	boolean updateBook(Book book);
+
+	Book findBookById(Long id);
 }

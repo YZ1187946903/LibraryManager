@@ -23,7 +23,7 @@ public class BookServiceImpl implements BookService {
 		query.setBegin((pageVO.getPageNo() - 1) * pageVO.getPageSize());
 		query.setSize(pageVO.getPageSize());
 		// 分页查询列表
-		List<Book> userList = bookDao.findListByQuery(query);
+		List<Book> bookList = bookDao.findListByQuery(query);
 		// 进行不分页查询，获得总的条数
 		query.setBegin(null);
 		query.setSize(null);
@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
 		Integer totalPage = (int) ((totalCount % pageVO.getPageSize() == 0) ? (totalCount / pageVO.getPageSize()) :
 				(totalCount / pageVO.getPageSize()) + 1);
 		// 封装参数
-		pageVO.setList(userList);
+		pageVO.setList(bookList);
 		pageVO.setTotalCount(totalCount);
 		pageVO.setTotalPage(totalPage);
 		return pageVO;
@@ -43,5 +43,16 @@ public class BookServiceImpl implements BookService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Book findBookById(Long id) {
+		Book book = new Book();
+		book.setId(id);
+		List<Book> bookList = bookDao.findListByQuery(book);
+		if (bookList != null && !bookList.isEmpty()) {
+			return bookList.get(0);
+		}
+		return null;
 	}
 }
