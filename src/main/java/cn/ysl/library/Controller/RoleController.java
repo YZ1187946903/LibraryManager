@@ -55,6 +55,18 @@ public class RoleController extends BaseController {
 	}
 
 	/**
+	 * <b>转发到修改页面</b>
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+	public String forwardRoleUpdate(@PathVariable("id") Long id, ModelMap map) throws Exception {
+		// 将该角色的 id 参数传给到修改页面
+		map.put("id", id);
+		return "role/role_update";
+	}
+
+	/**
 	 * <b>分页查询角色信息</b>
 	 * @param pageNo
 	 * @param pageSize
@@ -105,6 +117,18 @@ public class RoleController extends BaseController {
 	@ResponseBody
 	public boolean saveRole(Role role) throws Exception {
 		return roleService.saveRole(role);
+	}
+
+	/**
+	 * <b>修改角色信息</b>
+	 * @param role
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean updateRole(Role role) throws Exception {
+		return roleService.updateRole(role);
 	}
 
 	/**

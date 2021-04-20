@@ -40,4 +40,11 @@ public interface RoleService {
 	 * @throws Exception
 	 */
 	Role getRoleByName(String name) throws Exception;
+
+	/**
+	 * 修改用户信息
+	 * @param role
+	 * @return
+	 */
+	boolean updateRole(Role role);
 }

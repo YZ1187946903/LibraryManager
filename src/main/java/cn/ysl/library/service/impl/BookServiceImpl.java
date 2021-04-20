@@ -36,4 +36,12 @@ public class BookServiceImpl implements BookService {
 		pageVO.setTotalPage(totalPage);
 		return pageVO;
 	}
+
+	@Override
+	public boolean updateBook(Book book) {
+		if (bookDao.updateBook(book) > 0) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -110,9 +110,9 @@
 						targets: 3,
 						data: function (row, type, val, meta) {
 							var authBtn = "<a href='javascript:openAuthModal(\"" + row.id + "\");' class='btn btn-info btn-xs'><i class='fa fa-key'></i>&nbsp;授权</a>";
-							var updateBtn = "<a href='' class='btn btn-warning btn-xs'><i class='fa fa-wrench'></i>&nbsp;修改</a>";
-							var deteleBtn = "<a href='' class='btn btn-danger btn-xs'><i class='fa fa-remove'></i>&nbsp;删除</a>"
-							return authBtn + "&nbsp;" + updateBtn + "&nbsp;" + deteleBtn;
+							var updateBtn = "<a href='javascript:openUpdateModal(\"" + row.id + "\");' class='btn btn-warning btn-xs'><i class='fa fa-wrench'></i>&nbsp;修改</a>";
+							//var deteleBtn = "<a href='' class='btn btn-danger btn-xs'><i class='fa fa-remove'></i>&nbsp;删除</a>"
+							return authBtn + "&nbsp;" + updateBtn;
 						}
 					}
 				]
@@ -134,6 +134,17 @@
 			var title = "<i class='fa fa-plus'></i>&nbsp;新增角色信息";
 			// 嵌入 iframe 中的 url
 			var url = "role/save";
+			// 设定宽度和高度
+			var width = 800;
+			var heigth = 300;
+			// 获得该页面的父页面对象
+			parent.openModal(title, url, width, heigth);
+		}
+		// 4、修改角色名称
+		function openUpdateModal(id) {
+			var title = "<i class='fa fa-key'></i>&nbsp;修改角色名称";
+			// 嵌入 iframe 中的 url
+			var url = "role/update/" + id;
 			// 设定宽度和高度
 			var width = 800;
 			var heigth = 300;

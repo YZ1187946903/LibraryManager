@@ -102,7 +102,7 @@
 					// 关闭模态框
 					parent.closeModal();
 					// 刷新页面
-					parent.openFrame("fa fa-key", "角色管理", "fa fa-dashboard", "系统管理", "role/index");
+					parent.openFrame("fa fa-user-circle", "角色信息", "fa fa-cog", "系统管理", "role/index");
 				}
 			});
 		}

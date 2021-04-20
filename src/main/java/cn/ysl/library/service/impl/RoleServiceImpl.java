@@ -81,4 +81,12 @@ public class RoleServiceImpl implements RoleService {
 		}
 		return null;
 	}
+
+	@Override
+	public boolean updateRole(Role role) {
+		if (roleDao.updateRole(role) > 0) {
+			return true;
+		}
+		return false;
+	}
 }

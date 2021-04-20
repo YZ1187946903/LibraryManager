@@ -14,4 +14,6 @@ public interface BookDao {
 	 * @return
 	 */
 	List<Book> findListByQuery(Book query);
+
+	int updateBook(Book book);
 }

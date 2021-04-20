@@ -123,7 +123,7 @@
 						targets: 6,
 						data: function (row, type, val, meta) {
 							// 操作按钮
-							var updateBtn = "<a href='javascript:openAuthModal();' class='btn btn-info btn-xs'><i class='fa fa-key'></i>&nbsp;设置权限</a>";
+							var updateBtn = "<a href='javascript:openAuthModal(\"" + row.id + "\");' class='btn btn-info btn-xs'><i class='fa fa-key'></i>&nbsp;设置权限</a>";
 							return updateBtn;
 						}
 					}
@@ -131,9 +131,15 @@
 			});
 		});
 
-		function openAuthModal() {
+		function openAuthModal(id) {
+			var title = "<i class='fa fa-key'></i>&nbsp;修改图书权限";
+			// 嵌入 iframe 中的 url
+			var url = "book/updatePower/" + id;
+			// 设定宽度和高度
+			var width = 400;
+			var heigth = 200;
 			// 获得该页面的父页面对象
-			parent.openModal();
+			parent.openModal(title, url, width, heigth);
 		}
 	</script>
 </head>

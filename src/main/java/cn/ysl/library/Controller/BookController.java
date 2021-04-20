@@ -5,10 +5,8 @@ import cn.ysl.library.pojo.entity.Book;
 import cn.ysl.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 图书控制层
@@ -43,6 +41,14 @@ public class BookController {
 		return "book/book_out";
 	}
 
+	@GetMapping("/updatePower/{id}")
+	public String forwardUpdatePower(@PathVariable Long id, ModelMap map) throws Exception {
+		map.put("id",id);
+		return "book/book_powerUpdate";
+	}
+
+
+
 	/**
 	 * <b>分页查询图书信息</b>
 	 * @param pageNo
@@ -59,5 +65,11 @@ public class BookController {
 		pageVO = bookService.getByPage(pageVO, status);
 		// 2、将 pageVO对象异步传给前端
 		return pageVO;
+	}
+
+	@PostMapping("/update")
+	@ResponseBody
+	public boolean updateBook(Book book) throws Exception{
+		return bookService.updateBook(book);
 	}
 }

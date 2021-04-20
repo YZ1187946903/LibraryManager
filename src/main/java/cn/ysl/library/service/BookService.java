@@ -14,4 +14,6 @@ public interface BookService {
 	 * @throws Exception
 	 */
 	PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status) throws Exception;
+
+	boolean updateBook(Book book);
 }

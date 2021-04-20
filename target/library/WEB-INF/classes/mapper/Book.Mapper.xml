@@ -33,4 +33,39 @@
 		<result property="createTime" javaType="java.util.Date" column="create_time"/>
 		<result property="updateTime" javaType="java.util.Date" column="update_time"/>
 	</resultMap>
+
+	<update id="updateBook" parameterType="Book">
+		update sys_book
+		<set>
+		<trim suffixOverrides=",">
+			<if test="name != null and !name.isEmpty()">
+				name=#{name} ,
+			</if>
+			<if test="no != null and !no.isEmpty()">
+				no=#{no} ,
+			</if>
+			<if test="author != null and !author.isEmpty()">
+				author=#{author} ,
+			</if>
+			<if test="publish != null and !publish.isEmpty()">
+				publish=#{publish} ,
+			</if>
+			<if test="bookshelf != null and !bookshelf.isEmpty()">
+				bookshelf=#{bookshelf} ,
+			</if>
+			<if test="price != null">
+				price=#{price} ,
+			</if>
+			<if test="number != null">
+				number=#{number} ,
+			</if>
+			<if test="status != null">
+				status=#{status} ,
+			</if>
+		</trim>
+	</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
 </mapper>

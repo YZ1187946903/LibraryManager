@@ -127,7 +127,7 @@
 				</ol>
 			</section>
 			<section id="content" class="content">
-
+				<img src="static/img/slxy.png" style="width: 100%">
 				<!-- 存放连接页面 -->
 			</section>
 		</div>

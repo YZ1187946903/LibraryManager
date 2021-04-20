@@ -160,6 +160,14 @@
 				data: {
 					"status": 1,
 					"id":id
+				},
+				dataType: "json",
+				success: function(data) {
+					if (data) {
+						alert("移除成功");
+					} else {
+						alert("移除失败");
+					}
 				}
 			});
 		}

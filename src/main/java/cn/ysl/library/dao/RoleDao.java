@@ -38,4 +38,13 @@ public interface RoleDao {
 	 * @throws Exception
 	 */
 	int saveRole(Role role) throws Exception;
+
+
+	/**
+	 * <b>修改角色信息</b>
+	 * @param role
+	 * @return
+	 * @throws Exception
+	 */
+	int updateRole(Role role);
 }
