@@ -2,18 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ysl.library.dao.BookDao">
-	<select id="findListByQuery" parameterType="Book" resultMap="bookMap">
+	<select id="findListByQuery" parameterType="java.util.Map" resultMap="bookMap">
 		select
-			id,name,no,author,publish,bookshelf,price,number,
-		       status,create_time,update_time
-		from sys_book
+			sb.id,
+			sb.name,
+			sb.no,
+			sb.author,
+			sb.publish,
+			sb.bookshelf,
+			sb.price,
+			sb.number,
+			sb.status,
+			sb.create_time,
+			sb.update_time
+		from
+			sys_book sb
+		left join sys_user_book sub on sb.id=sub.book_id
 		<where>
 			<trim suffixOverrides="and">
-				<if test="id != null">id=#{id} and </if>
-				<if test="no != null">no=#{no} and </if>
-				<if test="name != null">name like concat('%', #{name}, '%') and </if>
-				<if test="bookshelf != null">bookshelf=#{bookshelf} and </if>
-				<if test="status != null">status=#{status} and </if>
+				<if test="query != null and query.id != null">id=#{query.id} and </if>
+				<if test="query != null and query.no != null">no=#{query.no} and </if>
+				<if test="query != null and query.name != null">name like concat('%', #{query.name}, '%') and </if>
+				<if test="query != null and query.bookshelf != null">bookshelf=#{query.bookshelf} and </if>
+				<if test="query != null and query.status != null">status=#{query.status} and </if>
+				<if test="id != null">sub.user_id=#{id} and </if>
 			</trim>
 		</where>
 		<if test="begin !=null and size != null">
@@ -68,4 +80,21 @@
 			id=#{id}
 		</where>
 	</update>
+
+	<delete id="backBook" parameterType="java.util.Map">
+		delete from sys_user_book where book_id=#{id} and user_id=#{userId}
+	</delete>
+	<insert id="borrowBook" parameterType="java.util.Map">
+		insert into sys_user_book(
+		    <trim suffixOverrides=",">
+			    <if test="id != null">book_id,</if>
+			    <if test="userId != null">user_id,</if>
+		    </trim>
+		) value (
+			<trim suffixOverrides=",">
+				<if test="id != null">#{id},</if>
+				<if test="userId != null">#{userId}</if>
+			</trim>
+		)
+	</insert>
 </mapper>

@@ -2,6 +2,7 @@ package cn.ysl.library.service.impl;
 
 import cn.ysl.library.base.pojo.vo.PageVO;
 import cn.ysl.library.dao.BookDao;
+import cn.ysl.library.dao.UserDao;
 import cn.ysl.library.pojo.entity.Book;
 import cn.ysl.library.pojo.entity.User;
 import cn.ysl.library.service.BookService;
@@ -9,25 +10,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service("BookServiceImpl")
 @Transactional
 public class BookServiceImpl implements BookService {
 	@Autowired
 	private BookDao bookDao;
+	@Autowired
+	private UserDao userDao;
 
 	@Override
-	public PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status) throws Exception {
+	public PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status,Long id) throws Exception {
 		Book query = new Book();
 		query.setStatus(status);
 		query.setBegin((pageVO.getPageNo() - 1) * pageVO.getPageSize());
 		query.setSize(pageVO.getPageSize());
 		// 分页查询列表
-		List<Book> bookList = bookDao.findListByQuery(query);
+		Map<String,Object> map = new HashMap<>();
+		map.put("query",query);
+		map.put("id",id);
+		List<Book> bookList = bookDao.findListByQuery(map);
 		// 进行不分页查询，获得总的条数
 		query.setBegin(null);
 		query.setSize(null);
-		Long totalCount = Long.valueOf(bookDao.findListByQuery(query).size());
+		Long totalCount = Long.valueOf(bookDao.findListByQuery(map).size());
 		Integer totalPage = (int) ((totalCount % pageVO.getPageSize() == 0) ? (totalCount / pageVO.getPageSize()) :
 				(totalCount / pageVO.getPageSize()) + 1);
 		// 封装参数
@@ -49,10 +58,44 @@ public class BookServiceImpl implements BookService {
 	public Book findBookById(Long id) {
 		Book book = new Book();
 		book.setId(id);
-		List<Book> bookList = bookDao.findListByQuery(book);
+		Map<String,Object> map = new HashMap<>();
+		map.put("query",book);
+		List<Book> bookList = bookDao.findListByQuery(map);
 		if (bookList != null && !bookList.isEmpty()) {
 			return bookList.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean backBook(Long id, Long userId,Integer number) {
+		Map<String,Long> map = new HashMap<>();
+		map.put("id",id);
+		map.put("userId",userId);
+		if (bookDao.backBook(map) > 0) {
+			User user = new User();
+			user.setId(userId);
+			user.setNumber(number - 1);
+			if (userDao.updateUser(user) > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean borrowBook(Long id, Long userId, Integer number) {
+		Map<String,Long> map = new HashMap<>();
+		map.put("id",id);
+		map.put("userId",userId);
+		if (bookDao.borrowBook(map) > 0) {
+			User user = new User();
+			user.setId(userId);
+			user.setNumber(number + 1);
+			if (userDao.updateUser(user) > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

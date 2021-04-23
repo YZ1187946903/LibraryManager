@@ -13,9 +13,13 @@ public interface BookService {
 	 * @return
 	 * @throws Exception
 	 */
-	PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status) throws Exception;
+	PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status,Long id) throws Exception;
 
 	boolean updateBook(Book book);
 
 	Book findBookById(Long id);
+
+	boolean backBook(Long id, Long userId,Integer number);
+
+	boolean borrowBook(Long id, Long userId, Integer number);
 }

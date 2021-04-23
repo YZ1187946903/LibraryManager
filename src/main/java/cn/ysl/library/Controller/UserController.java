@@ -52,6 +52,11 @@ public class UserController extends BaseController {
 		return "user/user_update";
 	}
 
+	@GetMapping("/recharge")
+	public String forwardRecharge() throws Exception{
+		return "user/user_recharge";
+	}
+
 
 	/**
 	 * <b>当登录失败，那么会调用该方法</b>

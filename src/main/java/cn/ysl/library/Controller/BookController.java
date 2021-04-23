@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 图书控制层
  */
@@ -53,6 +55,16 @@ public class BookController {
 		return "book/book_update";
 	}
 
+	@GetMapping("/borrow")
+	public String forwardBorrow() throws Exception{
+		return "book/book_borrow";
+	}
+
+	@GetMapping("/back")
+	public String forwardBack() throws Exception{
+		return "book/book_back";
+	}
+
 
 
 	/**
@@ -65,17 +77,31 @@ public class BookController {
 	 */
 	@RequestMapping(value = "/page", method = RequestMethod.POST)
 	@ResponseBody
-	public PageVO<Book> page(Integer pageNo, Integer pageSize, Integer draw, Integer status) throws Exception {
+	public PageVO<Book> page(Integer pageNo, Integer pageSize,
+	                         Integer draw, Integer status,Long id) throws Exception {
 		// 1、根据ajax前端页面传过来的参数，创建PageVO对象
 		PageVO<Book> pageVO = new PageVO<>(pageNo,pageSize,draw);
-		pageVO = bookService.getByPage(pageVO, status);
+		pageVO = bookService.getByPage(pageVO, status,id);
 		// 2、将 pageVO对象异步传给前端
 		return pageVO;
 	}
+
 
 	@PostMapping("/update")
 	@ResponseBody
 	public boolean updateBook(Book book) throws Exception{
 		return bookService.updateBook(book);
+	}
+
+	@PostMapping("/backBook")
+	@ResponseBody
+	public boolean backBook(Long id,Long userId,Integer number) throws Exception {
+		return bookService.backBook(id,userId,number);
+	}
+
+	@PostMapping("/borrowBook")
+	@ResponseBody
+	public boolean borrowBook(Long id,Long userId,Integer number) throws Exception {
+		return bookService.borrowBook(id,userId,number);
 	}
 }

@@ -4,11 +4,13 @@ import cn.ysl.library.pojo.entity.User;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户数据持久层
  */
 public interface UserDao {
+
 	/**
 	 * 查询 User集合
 	 * @param query

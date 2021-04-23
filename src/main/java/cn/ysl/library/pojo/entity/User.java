@@ -2,6 +2,8 @@ package cn.ysl.library.pojo.entity;
 
 import cn.ysl.library.base.pojo.entity.BaseEntity;
 
+import java.util.List;
+
 /**
  * 图书管理系统-用户实体类
  */
@@ -15,6 +17,15 @@ public class User extends BaseEntity {
 	private String idCard;                  // 身份证号码
 	private Integer number;                 // 借阅数量
 	private Integer money;                  // 账户余额
+	private List<Book> bookList;            // 借阅图书集合
+
+	public List<Book> getBookList() {
+		return bookList;
+	}
+
+	public void setBookList(List<Book> bookList) {
+		this.bookList = bookList;
+	}
 
 	public Long getId() {
 		return id;
@@ -65,11 +76,18 @@ public class User extends BaseEntity {
 	}
 
 	public Integer getNumber() {
+		if (bookList != null) {
+			return bookList.size();
+		}
 		return number;
 	}
 
 	public void setNumber(Integer number) {
-		this.number = number;
+		if (bookList != null) {
+			this.number = bookList.size();
+		} else {
+			this.number = number;
+		}
 	}
 
 	public Integer getMoney() {
