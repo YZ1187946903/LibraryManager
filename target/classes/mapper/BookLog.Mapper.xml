@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ysl.library.dao.BookLogDao">
+	<select id="findListByQuery" parameterType="BookLog" resultMap="logMap">
+		select id,type,operator,place,name,number,createTime from sys_book_log
+		<where>
+			<trim suffixOverrides="and">
+				<if test="id != null">
+					id = #{id} and
+				</if>
+				<if test="name != null">
+					name like concat('%', #{name}, '%') and
+				</if>
+				<if test="type != null">
+					type = #{type } and
+				</if>
+			</trim>
+		</where>
+		order by createTime desc
+		<if test="begin != null and size != null">
+			limit #{begin}, #{size}
+		</if>
+	</select>
+	<resultMap id="logMap" type="BookLog">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="type" javaType="java.lang.String" column="type"/>
+		<result property="operator" javaType="java.lang.String" column="operator"/>
+		<result property="place" javaType="java.lang.String" column="place"/>
+		<result property="name" javaType="java.lang.String" column="name"/>
+		<result property="number" javaType="java.lang.Integer" column="number"/>
+		<result property="createTime" javaType="java.util.Date" column="createTime"/>
+	</resultMap>
+
+	<insert id="saveBookLog" parameterType="BookLog">
+		insert into sys_book_log(
+		<trim suffixOverrides=",">
+			<if test="type != null">type,</if>
+			<if test="operator != null">operator,</if>
+			<if test="place != null">place,</if>
+			<if test="name != null">name,</if>
+			<if test="number != null">number,</if>
+		</trim>
+		) value (
+		<trim suffixOverrides=",">
+			<if test="type != null">#{type},</if>
+			<if test="operator != null">#{operator},</if>
+			<if test="place != null">#{place},</if>
+			<if test="name != null">#{name},</if>
+			<if test="number != null">#{number},</if>
+		</trim>
+		)
+	</insert>
+</mapper>
