@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Title</title>
+<%--	http://localhost:8080/library/bookLog/in--%>
 	<%--	在bootstrap.min.css 因让表格中的数据居中，我自己增加了一个居中样式--%>
 	<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css">
@@ -50,7 +51,8 @@
 						var pageSize = size;
 						// 扩展请求时候的数据，重点在于pageNum和pageSize
 						var params = {
-							// 审核状态码：不带
+							// 操作类型
+							"type":"入库",
 							// 获得表格对象后，
 							"pageNo": pageNo,
 							// 每页显示数量
@@ -93,48 +95,32 @@
 						targets: 1,
 						data: function (row, type, val, meta) {
 							// row 就是该行的数据对象
-							return "《" + row.name + "》";
+							return  row.operator;
 						}
 					}, {
 						targets: 2,
 						data: function (row, type, val, meta) {
-							return row.no;
+							return row.place;
 						}
 					}, {
 						targets: 3,
 						data: function (row, type, val, meta) {
-							return row.author;
+							return "《" +row.name+ "》";
 						}
 					},{
 						targets: 4,
 						data: function (row, type, val, meta) {
-							return row.publish;
+							return row.number+"本";
 						}
 					},{
 						targets: 5,
 						data: function (row, type, val, meta) {
-
-							return row.price+"元";
-						}
-					},{
-						targets: 6,
-						data: function (row, type, val, meta) {
-
-							return row.number+"本";
-						}
-					},{
-						targets: 7,
-						data: function (row, type, val, meta) {
-							if (row.status == 0) {
-								return "不可借阅"
-							} else {
-								return "可借阅"
-							}
-						}
-					},{
-						targets: 8,
-						data: function (row, type, val, meta) {
-							return row.bookshelf;
+							var date = new Date(row.createTime);
+							// 格式化时间
+							var year = date.getFullYear();
+							var month = date.getMonth() + 1;
+							var day = date.getDate();
+							return year + "年" + month + "月" + day + "日";
 						}
 					}
 				]
@@ -142,13 +128,23 @@
 		});
 
 		// 入库函数。。
+		function bookIn(){
+			var title = "<i class='fa fa-key'></i>&nbsp;进行入库操作";
+			// 嵌入 iframe 中的 url
+			var url = "bookLog/add";
+			// 设定宽度和高度
+			var width = 600;
+			var heigth = 500;
+			// 获得该页面的父页面对象
+			parent.openModal(title, url, width, heigth);
+		}
 	</script>
 </head>
 <body>
 <div class="container" style="margin: 10px 5px;">
 	<div class="row">
 		<div class="col-md-12">
-			<a href="#" class="btn btn-success">
+			<a href="javascript:bookIn()" class="btn btn-success">
 				<i class="fa fa-plus"></i>&nbsp;
 				进行入库操作
 			</a>
@@ -161,14 +157,11 @@
 				<thead>
 				<tr>
 					<th>序号</th>
-					<th>书籍名称</th>
-					<th>书籍编号</th>
-					<th>作者</th>
-					<th>出版社</th>
-					<th>价格</th>
-					<th>库存数量</th>
-					<th>借读状态</th>
-					<th>存放区域</th>
+					<th>入库人员</th>
+					<th>入库来源</th>
+					<th>入库书籍</th>
+					<th>入库数量</th>
+					<th>入库时间</th>
 				</tr>
 				</thead>
 			</table>

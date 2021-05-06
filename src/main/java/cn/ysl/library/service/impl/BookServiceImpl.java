@@ -68,6 +68,19 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
+	public Book findBookByNo(String no) {
+		Book book = new Book();
+		book.setNo(no);
+		Map<String,Object> map = new HashMap<>();
+		map.put("query",book);
+		List<Book> bookList = bookDao.findListByQuery(map);
+		if (bookList != null && !bookList.isEmpty()) {
+			return bookList.get(0);
+		}
+		return null;
+	}
+
+	@Override
 	public boolean backBook(Long id, Long userId,Integer number) {
 		Map<String,Long> map = new HashMap<>();
 		map.put("id",id);
@@ -95,6 +108,14 @@ public class BookServiceImpl implements BookService {
 			if (userDao.updateUser(user) > 0) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean saveBook(Book book) {
+		if (bookDao.saveBook(book) > 0) {
+			return true;
 		}
 		return false;
 	}

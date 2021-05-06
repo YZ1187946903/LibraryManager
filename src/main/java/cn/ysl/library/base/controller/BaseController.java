@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@Controller("baseController")
+@Controller("BaseController")
 public class BaseController {
 	@Autowired
 	protected HttpServletRequest request;

@@ -19,7 +19,11 @@ public interface BookService {
 
 	Book findBookById(Long id);
 
+	Book findBookByNo(String no);
+
 	boolean backBook(Long id, Long userId,Integer number);
 
 	boolean borrowBook(Long id, Long userId, Integer number);
+
+	boolean saveBook(Book book);
 }

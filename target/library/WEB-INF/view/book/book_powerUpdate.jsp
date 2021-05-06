@@ -17,7 +17,7 @@
 					// 借助于该 submit 事件，实现表单的异步提交
 					// 将对应表单中所有的数据进行提取，封装成数据以便于进行提交
 					var formData = $("#updateForm").serialize();
-					// 进行异步添加
+					// 进行异步修改
 					$.ajax({
 						url: "../update",
 						type: "post",

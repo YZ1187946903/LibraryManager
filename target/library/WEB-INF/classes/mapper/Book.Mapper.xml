@@ -28,8 +28,8 @@
 				<if test="id != null">sub.user_id=#{id} and </if>
 			</trim>
 		</where>
-		<if test="begin !=null and size != null">
-			limit #{begin},#{size}
+		<if test="query != null and query.begin !=null and query.size != null">
+			limit #{query.begin},#{query.size}
 		</if>
 	</select>
 	<resultMap id="bookMap" type="Book">
@@ -77,7 +77,14 @@
 		</trim>
 	</set>
 		<where>
-			id=#{id}
+			<trim suffixOverrides="and">
+				<if test="id != null">
+					id=#{id} and
+				</if>
+				<if test="no != null and !no.isEmpty()">
+					no=#{no} and
+				</if>
+			</trim>
 		</where>
 	</update>
 
@@ -94,6 +101,32 @@
 			<trim suffixOverrides=",">
 				<if test="id != null">#{id},</if>
 				<if test="userId != null">#{userId}</if>
+			</trim>
+		)
+	</insert>
+
+	<insert id="saveBook" parameterType="Book">
+		insert into sys_book(
+			<trim suffixOverrides=",">
+				<if test="name != null">name,</if>
+				<if test="no != null">no,</if>
+				<if test="author != null">author,</if>
+				<if test="publish != null">publish,</if>
+				<if test="bookshelf != null">bookshelf,</if>
+				<if test="price != null">price,</if>
+				<if test="number != null">number,</if>
+				<if test="status != null">status,</if>
+			</trim>
+		) value (
+			<trim suffixOverrides=",">
+				<if test="name != null">#{name},</if>
+				<if test="no != null">#{no},</if>
+				<if test="author != null">#{author},</if>
+				<if test="publish != null">#{publish},</if>
+				<if test="bookshelf != null">#{bookshelf},</if>
+				<if test="price != null">#{price},</if>
+				<if test="number != null">#{number},</if>
+				<if test="status != null">#{status},</if>
 			</trim>
 		)
 	</insert>

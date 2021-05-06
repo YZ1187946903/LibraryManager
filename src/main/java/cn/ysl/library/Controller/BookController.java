@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 /**
  * 图书控制层
@@ -31,16 +30,6 @@ public class BookController {
 	@GetMapping("/power")
 	public String forwardPower() throws Exception {
 		return "book/book_power";
-	}
-
-	@GetMapping("/in")
-	public String forwardIn() throws Exception {
-		return "book/book_in";
-	}
-
-	@GetMapping("/out")
-	public String forwardOut() throws Exception {
-		return "book/book_out";
 	}
 
 	@GetMapping("/updatePower/{id}")

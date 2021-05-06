@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 		query.setSize(pageVO.getPageSize());
 		// 1、分页查询列表
 		List<User> userList = userDao.findListByQuery(query);
-		// 遍历集合，给图书集合列表赋值
+		// 遍历集合，给图书集合列表赋值（防止有人直接在数据库添加了借阅记录，但是人员借阅数量不匹配）
 		Map<String,Object> map = new HashMap<>();
 		for (User user:userList) {
 			map.put("id",user.getId());

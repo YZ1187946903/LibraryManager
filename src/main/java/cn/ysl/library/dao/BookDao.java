@@ -20,4 +20,6 @@ public interface BookDao {
 	int backBook(Map<String, Long> map);
 
 	int borrowBook(Map<String, Long> map);
+
+	int saveBook(Book book);
 }

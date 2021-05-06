@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<div class="login">
-		<form action="login" method="POST">
+		<form method="post" action="login">
 			<table>
 				<caption>Library-系统（登录）</caption>
 				<tr>

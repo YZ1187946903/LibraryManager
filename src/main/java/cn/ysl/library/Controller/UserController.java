@@ -26,11 +26,7 @@ public class UserController extends BaseController {
 		return "user/user_login";
 	}
 
-	/**
-	 * <b>转发到登录界面</b>
-	 * @return
-	 * @throws Exception
-	 */
+
 	@GetMapping("/list")
 	public String forwardList() throws Exception{
 		return "user/user_list";
@@ -65,8 +61,8 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
 	public String loginError() throws Exception {
-		// 执行退出操作
-		return "redirect:logout";
+		// 登录失败
+		return "user/logout";
 	}
 
 	/**
