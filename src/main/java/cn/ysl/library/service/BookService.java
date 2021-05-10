@@ -23,7 +23,7 @@ public interface BookService {
 
 	boolean backBook(Long id, Long userId,Integer number);
 
-	boolean borrowBook(Long id, Long userId, Integer number);
+	boolean borrowBook(Long id, Long userId, Integer number,Integer price);
 
 	boolean saveBook(Book book);
 }

@@ -52,7 +52,7 @@
 						// 扩展请求时候的数据，重点在于pageNum和pageSize
 						var params = {
 							// 操作类型
-							t:"出库",
+							"type":"出库",
 							// 获得表格对象后，
 							"pageNo": pageNo,
 							// 每页显示数量

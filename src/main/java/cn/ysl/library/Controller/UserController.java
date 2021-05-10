@@ -53,6 +53,16 @@ public class UserController extends BaseController {
 		return "user/user_recharge";
 	}
 
+	@GetMapping("/password")
+	public String forwardPassword() throws Exception{
+		return "user/user_password";
+	}
+
+	@GetMapping("/info")
+	public String userInfo() throws Exception{
+		return "user/user_info";
+	}
+
 
 	/**
 	 * <b>当登录失败，那么会调用该方法</b>
@@ -62,7 +72,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
 	public String loginError() throws Exception {
 		// 登录失败
-		return "user/logout";
+		return "redirect:logout";
 	}
 
 	/**
@@ -106,7 +116,43 @@ public class UserController extends BaseController {
 	@PostMapping("/update")
 	@ResponseBody
 	public boolean update(User user) throws Exception{
-		return userService.updateUser(user);
+		if (userService.updateUser(user)) {
+			// 修改成功重新绑定 user 对象更新对象信息
+			session.setAttribute("user",userService.getUserById(user.getId()));
+			return true;
+		}
+		return false;
 	}
 
+	@PostMapping("/password")
+	@ResponseBody
+	public boolean updatePassword(String oldPassword,String password,Long id) throws Exception{
+		User user = userService.getUserById(id);
+		if (user.getPassword().equals(MD5Util.encrypt(oldPassword))) {
+			// 将新密码加密然后赋值到user中
+			user.setPassword(MD5Util.encrypt(password));
+			if (userService.updateUser(user)) {
+				request.getSession().removeAttribute("user");
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@PostMapping("/confirmPassword")
+	@ResponseBody
+	public boolean checkConfirmPassword(String password,String confirmPassword) throws Exception {
+		if (password != null && password.equals(confirmPassword)) {
+			return true;
+		}
+		return false;
+	}
+
+	@PostMapping("/recharge")
+	@ResponseBody
+	public boolean recharge(User entity){
+		User user = userService.getUserById(entity.getId());
+		entity.setMoney(user.getMoney() + entity.getMoney());
+		return userService.updateUser(entity);
+	}
 }

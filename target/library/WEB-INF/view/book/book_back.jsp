@@ -160,6 +160,7 @@
 					} else {
 						alert("归还失败！");
 					}
+					window.location.reload();
 				}
 			});
 		}

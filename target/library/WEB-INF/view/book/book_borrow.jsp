@@ -132,7 +132,7 @@
 						targets: 8,
 						data: function (row, type, val, meta) {
 							// 操作按钮
-							var updateBtn = "<a href='javascript:borrowModal(\"" + row.id + "\");' class='btn btn-info btn-xs'><i class='fa fa-key'></i>&nbsp;借阅</a>";
+							var updateBtn = "<a href='javascript:borrowModal(" + row.id + "," + row.price + ");' class='btn btn-info btn-xs'><i class='fa fa-key'></i>&nbsp;借阅</a>";
 							return updateBtn;
 						}
 					}
@@ -140,7 +140,7 @@
 			});
 		});
 
-		function borrowModal(id) {
+		function borrowModal(id,price) {
 			// var 声明全局变量，let 局部变量，一般循环使用let
 			$.ajax({
 				// 1、设定所发送 HTTP 请求的 URL 地址
@@ -151,15 +151,18 @@
 				data: {
 					"id":id,
 					"userId":${user.id},
-					"number":${user.number}
+					"number":${user.number},
+					"price":price
 				},
 				dataType: "json",
 				success: function(data) {
 					if (data) {
 						alert("借阅成功！");
 					} else {
-						alert("借阅失败！");
+						alert("借阅失败！请检查余额或是否已借阅该书！");
 					}
+					// 刷新页面
+					window.location.reload();
 				}
 			});
 		}

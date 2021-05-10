@@ -168,6 +168,7 @@
 					} else {
 						alert("移除失败");
 					}
+					window.location.reload();
 				}
 			});
 		}

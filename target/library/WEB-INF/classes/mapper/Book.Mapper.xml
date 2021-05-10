@@ -17,7 +17,10 @@
 			sb.update_time
 		from
 			sys_book sb
-		left join sys_user_book sub on sb.id=sub.book_id
+		<if test="id != null">
+			left join sys_user_book sub on sb.id=sub.book_id
+		</if>
+
 		<where>
 			<trim suffixOverrides="and">
 				<if test="query != null and query.id != null">id=#{query.id} and </if>
@@ -25,6 +28,7 @@
 				<if test="query != null and query.name != null">name like concat('%', #{query.name}, '%') and </if>
 				<if test="query != null and query.bookshelf != null">bookshelf=#{query.bookshelf} and </if>
 				<if test="query != null and query.status != null">status=#{query.status} and </if>
+
 				<if test="id != null">sub.user_id=#{id} and </if>
 			</trim>
 		</where>

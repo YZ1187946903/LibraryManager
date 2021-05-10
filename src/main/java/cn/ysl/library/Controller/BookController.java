@@ -90,7 +90,7 @@ public class BookController {
 
 	@PostMapping("/borrowBook")
 	@ResponseBody
-	public boolean borrowBook(Long id,Long userId,Integer number) throws Exception {
-		return bookService.borrowBook(id,userId,number);
+	public boolean borrowBook(Long id,Long userId,Integer number,Integer price) throws Exception {
+		return bookService.borrowBook(id,userId,number,price);
 	}
 }

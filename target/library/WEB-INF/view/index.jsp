@@ -61,7 +61,13 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<li class="dropdown messages-menu">
-							<a href="#">
+							<a href="javascript:openFrame('fa fa-wrench', '修改密码', 'fa fa-user-circle', '我的信息', 'user/password');">
+								<i class="fa fa-wrench"></i>
+								修改密码
+							</a>
+						</li>
+						<li class="dropdown messages-menu">
+							<a href="javascript:openFrame('fa fa-user-circle', '我的信息', 'fa fa-user-circle', '我的信息', 'user/info');">
 								<i class="fa fa-user-circle-o"></i>
 								${sessionScope.user.name}
 							</a>

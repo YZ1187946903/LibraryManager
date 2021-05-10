@@ -6,6 +6,7 @@ import cn.ysl.library.dao.UserDao;
 import cn.ysl.library.pojo.entity.Book;
 import cn.ysl.library.pojo.entity.User;
 import cn.ysl.library.service.BookService;
+import cn.ysl.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class BookServiceImpl implements BookService {
 	private BookDao bookDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public PageVO<Book> getByPage(PageVO<Book> pageVO, Integer status,Long id) throws Exception {
@@ -97,16 +100,29 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public boolean borrowBook(Long id, Long userId, Integer number) {
-		Map<String,Long> map = new HashMap<>();
-		map.put("id",id);
-		map.put("userId",userId);
-		if (bookDao.borrowBook(map) > 0) {
-			User user = new User();
-			user.setId(userId);
-			user.setNumber(number + 1);
-			if (userDao.updateUser(user) > 0) {
-				return true;
+	public boolean borrowBook(Long id, Long userId, Integer number,Integer price) {
+		User user = userService.getUserById(userId);
+		Map<String,Object> map = new HashMap<>();
+		map.put("id",userId);
+		List<Book> list = bookDao.findListByQuery(map);
+		for (Book b: list) {
+			// 已经借阅了该书不允许在借阅
+			if (b.getId()==id) {
+				return false;
+			}
+		}
+		// 保证余额足够
+		if (price < user.getMoney()) {
+			Map<String,Long> borrowMap = new HashMap<>();
+			borrowMap.put("userId",userId);
+			borrowMap.put("id",id);
+			if (bookDao.borrowBook(borrowMap) > 0) {
+				user.setId(userId);
+				user.setNumber(number + 1);
+				user.setMoney(user.getMoney()-price);
+				if (userDao.updateUser(user) > 0) {
+					return true;
+				}
 			}
 		}
 		return false;
