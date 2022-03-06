@@ -27,7 +27,7 @@
 							if (data) {
 								alert("修改成功，请重新登录！");
 								// 修改成功，跳转页面执行用户退出登录
-								parent.location.href = "http://localhost:8080/library/user/logout";
+								parent.location.href = "http://localhost:8081/library/user/logout";
 							} else {
 								alert("修改失败")
 							}
