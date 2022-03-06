@@ -117,8 +117,11 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public boolean update(User user) throws Exception{
 		if (userService.updateUser(user)) {
-			// 修改成功重新绑定 user 对象更新对象信息
-			session.setAttribute("user",userService.getUserById(user.getId()));
+			User entity = (User) session.getAttribute("user");
+			// 若修改了本人信息, user 对象需要更新信息
+			if (user.getId().equals(entity.getId())) {
+				session.setAttribute("user",userService.getUserById(user.getId()));
+			}
 			return true;
 		}
 		return false;

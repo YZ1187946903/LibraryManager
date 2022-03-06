@@ -13,6 +13,7 @@
 	<script type="application/javascript">
 		// 1、异步发送page请求，获取数据
 		$(function () {
+			// 想要自己写个查询功能的话，需要重新发送请求获取信息，需要先清空表信息。--    $("#myTable").dataTable().fnDestroy();
 			$("#myTable").DataTable({
 				// 语言切换成中文
 				language: {
